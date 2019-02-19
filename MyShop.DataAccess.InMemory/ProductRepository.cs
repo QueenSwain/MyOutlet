@@ -56,6 +56,7 @@ namespace MyShop.DataAccess.InMemory
             }
         }
 
+        // IQueryable is an interface that defines a data source that you can execute queries
         public IQueryable<Product> Collection()
         {
             return Products.AsQueryable();
