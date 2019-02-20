@@ -46,6 +46,7 @@ namespace MyShop.DataAccess.InMemory
         public Product Find(string Id)
         {
             Product FindProduct= Products.Find(p => p.Id == Id);
+
             if (FindProduct != null)
             {
                 return FindProduct;
