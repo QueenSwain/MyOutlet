@@ -11,28 +11,28 @@ namespace MyShop.DataAccess.InMemory
    public class ProductRepository
     {
         ObjectCache cache = MemoryCache.Default;
-        List<Product> Products;
+        List<Product> products;
 
         public ProductRepository()
         {
-            Products = cache["Products"] as List<Product>;
-            if(Products==null)
+            products = cache["products"] as List<Product>;
+            if(products == null)
             {
-                Products = new List<Product>();
+                products = new List<Product>();
             }
         }
         public void Commit()
         {
-            cache["Products"]=Products;
+            cache["products"]= products; //explicitly storing current product to cache
         }
         public void Insert(Product p)
         {
-            Products.Add(p);
+            products.Add(p); //Adding product to the "products" list
         }
 
         public void Update(Product product)
         {
-            Product ProductToUpdate = Products.Find(p=>p.Id==product.Id);
+            Product ProductToUpdate = products.Find(p=>p.Id==product.Id);
             if(ProductToUpdate!=null)
             {
                 ProductToUpdate = product;
@@ -45,7 +45,7 @@ namespace MyShop.DataAccess.InMemory
 
         public Product Find(string Id)
         {
-            Product FindProduct= Products.Find(p => p.Id == Id);
+            Product FindProduct= products.Find(p => p.Id == Id);
             if (FindProduct != null)
             {
                 return FindProduct;
@@ -56,17 +56,17 @@ namespace MyShop.DataAccess.InMemory
             }
         }
 
-        public IQueryable<Product> Collection()
+        public IQueryable<Product> Collection() ///returns the list of products
         {
-            return Products.AsQueryable();
+            return products.AsQueryable();
         }
 
         public void Delete(string Id)
         {
-            Product DeleteProduct = Products.Find(p => p.Id == Id);
+            Product DeleteProduct = products.Find(p => p.Id == Id);
             if (DeleteProduct != null)
             {
-                Products.Remove(DeleteProduct);
+                products.Remove(DeleteProduct);
             }
             else
             {
