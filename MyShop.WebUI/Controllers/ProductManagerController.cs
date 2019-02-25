@@ -3,24 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using MyShop.Core;
 using MyShop.Core.Models;
 using MyShop.DataAccess.InMemory;
 
 namespace MyShop.WebUI.Controllers
 {
-    public class ProductMangerController : Controller
+    public class ProductManagerController : Controller
     {
         ProductRepository context;
-        public ProductMangerController()
+
+        public ProductManagerController()
         {
             context = new ProductRepository();
         }
-        // GET: ProductManger
+
+        // GET: ProductManager
         public ActionResult Index()
         {
-            List<Product> Products = context.Collection().ToList();
-            return View(Products);
+            List<Product> products = context.Collection().ToList();
+            return View(products);
         }
 
         public ActionResult Create()
@@ -30,16 +31,16 @@ namespace MyShop.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Product Createproduct)
+        public ActionResult Create(Product product)
         {
             //ModelState.IsValid is the only way to know whether there were any validation(or data conversion) errors during model binding
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return View(Createproduct);
+                return View(product);
             }
             else
             {
-                context.Insert(Createproduct);
+                context.Insert(product);
                 context.Commit();
 
                 return RedirectToAction("Index");
@@ -48,27 +49,27 @@ namespace MyShop.WebUI.Controllers
 
         public ActionResult Edit(string Id)
         {
-            Product ProdEdit = context.Find(Id);
-            if(ProdEdit == null)
+            Product product = context.Find(Id);
+            if (product == null)
             {
                 return HttpNotFound();
             }
             else
             {
-                return View(ProdEdit);
+                return View(product);
             }
         }
         [HttpPost]
-        public ActionResult Edit(Product product,string Id)
+        public ActionResult Edit(Product product, string Id)
         {
             Product ProductToEdit = context.Find(Id);
-              if (ProductToEdit == null)
+            if (ProductToEdit == null)
             {
                 return HttpNotFound();
             }
             else
             {
-                if(!ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
                     return View(product);
                 }
